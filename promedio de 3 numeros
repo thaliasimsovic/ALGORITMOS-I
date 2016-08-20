@@ -1,0 +1,28 @@
+// promedio de 3 numeros.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+
+using namespace std;
+
+void main()
+
+{
+	float a,b,c;
+	double P;
+
+	cout<< "ingrese los tres numeros a promediar:"<<endl;
+	cin>>a;
+	cin>>b;
+	cin>>c;
+
+	P= (a+b+c)/3;
+
+	cout<< "el promedio de los tres numeros ingresados es:"<< P;
+
+	getch();
+
+}
+
