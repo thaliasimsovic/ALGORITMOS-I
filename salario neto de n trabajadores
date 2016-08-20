@@ -1,0 +1,51 @@
+// salario neto de n trabajadores.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+//declara constantes
+#define MAX 100
+#define AFP 0.121
+#define IVA 0.13
+
+using namespace std;
+
+void main()
+{
+	int N;
+	float sn, sb;
+	//validar con do para que repita mientras se digite mal
+
+	do{
+
+	cout<<"ingrese el numero de empleados:"<<endl;
+	cin>>N;
+
+	}while ((N>=MAX) || (N<0));
+
+	//FIN DE LA VALIDACION 
+
+	for (int i=0;i<N;i++)
+	{
+	   cout<<"ingrese el salario bruto:"<<endl;
+	   cin>>sb;
+
+	
+	   if (sb>2*1850)
+	   
+		   sn= sb-sb*(IVA+AFP);
+
+	   else
+
+		   sn= sb-sb*(AFP);
+	cout<< "el salario neto es:" <<sn;
+
+	}
+
+	getch();
+
+}
+
+
+
