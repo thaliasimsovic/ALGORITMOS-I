@@ -1,0 +1,32 @@
+// salario neto de n trabajadores.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+
+using namespace std;
+
+void main()
+
+{
+	int b,A;
+	int opcion;
+	do{
+		cout<<"\t\t MENU \n";
+		cout<<" 1. calcule el area de un cuadrado:\n";
+		cout<<" 2. calcular el interes simple: \n";
+		cout<<" 0. salir\n";
+		cout<<"Opcion: ";
+        cin>>opcion;
+		switch(opcion)
+		{
+case1:           
+			cout<<"ingrese el lado del cuadrado:"<<endl;
+                  cin>>b;
+	              A= B*B
+
+		          cout<<"el area del cuadrado es:"<< A;
+ 
+	   break;
+
