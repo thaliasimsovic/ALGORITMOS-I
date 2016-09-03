@@ -1,0 +1,128 @@
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+using namespace std;
+
+void main()
+
+{
+	char aux[20];
+	int promedio=0;
+	float notas[5];
+	char nombre[40][10];
+	float n,n1,n2,n3,np,nf,prom;
+	int i,j,nota=1,baja=10000, alta=0 , sum=0,opcion;
+
+	do{
+		cout<<"MENU:";
+		cout<<"1.ingresar nombre y nota del alumno:";
+		cout<<"2. listar al alumno:";
+		cout<<"3. sacar la amejor nota:";
+		cout<<"4. promedio de notas:";
+		cout<<"opcion:";
+		cin>> opcion;
+
+		switch(opcion)
+		{
+
+
+case 1: 
+			cout<<"ingrese el nombre del alumno:";
+			cin>>nombre;
+			cout>>"ingrese la nota del alumno:";
+			cin>>n;
+
+			cout<<nombre<<nota;
+
+			break;
+
+case 2:
+
+			for(i=0; i<10; i++) 
+{ 
+
+cout<< i+1 << " Introduce nombre: "; 
+cin>> nombre[i]; 
+
+} 
+
+for(i=0; i<9; i++) 
+for(j=i+1; j<10; j++) 
+if((nombre[i], nombre[j]) > 0) 
+{ 
+strcpy(aux, nombre[i]); 
+strcpy(nombre[i], nombre[j]); 
+strcpy(nombre[j], aux); 
+} 
+
+for(i=0; i<10; i++) 
+cout<<nombre[i]<<endl; 
+
+break;
+
+case 3:
+
+	while{
+
+		cout<<"ingrese nota:";
+		cin>>nota;
+
+		if(nota<0)
+			break;
+		if(nota<baja)
+			baja=nota;
+		if(nota>alta)
+			alta=nota;
+
+		sum=sum+nota;
+
+		i++;
+	}
+	cout<<"la nota mas alta es:"<<alta;
+	cout<<"la nota mas baja es:"<<baja;
+
+	break;
+
+case 4:
+
+	cout<<"ingrese la nota de los parciales:";
+	cin>>n1>>n2>>n3;
+	cout"ingrese la nota practica:";
+	cin>>np;
+	cout<<"ingrese la nota del examen final:";
+	cin>>nf;
+	prom=(((n1+n2+n3)*0.4)+(np*0.2)+(nf*0.4)/3);
+
+	cout<<"su promedio es:"<<prom;
+
+	if (prom>51)
+
+		cout<<"el alumno aprobo la materia:";
+	else
+		cout<<"el alumno reprobo:";
+
+	break;
+
+case 0:
+	cout<<"salir:";
+
+break;
+
+default:
+
+	cout<<"opcion invalida:";
+		}while (opcion !=0);
+
+		getch();
+
+		}
+
+
+
+
+
+
