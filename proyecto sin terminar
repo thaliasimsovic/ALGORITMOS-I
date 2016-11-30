@@ -1,0 +1,559 @@
+#include "stdafx.h"
+#include "conio.h"
+#include <stdio.h>
+#include <string>
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+struct instrumento{
+	string nombre;
+	int codigo;
+	string descripcion;
+	string marca;
+	int cantidad;
+	string lugar;
+	char estado;
+};
+struct partituras{
+   int codigo;
+   string nom;
+   string autor;
+   char estado;
+};
+struct usuario{
+string usuarios;
+string contra;
+};
+void crearArchivo(char nomArch[])
+{
+	FILE *ptr;
+	ptr= fopen(nomArch, "wb");
+	fclose(ptr);
+}
+void solicitarDatos(instrumento &reg) 
+{	
+	cout<<endl<< "Introducir Nombre:";
+	do{
+		getline(cin,reg.nombre);
+	}while(reg.nombre.length() == 0);
+	cout<< "codigo:";
+	cin>> reg.codigo;
+	cout<<"descripcion:";	
+	do{
+		getline(cin, reg.descripcion);
+	}while(reg.descripcion.length() == 0);
+	cout<<"marca:";	
+	do{
+		getline(cin,reg.marca);
+	}while(reg.marca.length() == 0);
+
+	cout<<"cantidad:";
+	cin>>reg.cantidad;
+
+	cout<<"lugar:";	
+	do{
+		getline(cin, reg.lugar);
+		}while(reg.lugar.length() == 0);
+     system("cls");
+}
+void mostrarRegistro(instrumento &reg, int nroreg)
+{
+	cout<<endl<< nroreg<<"\t"<< reg.nombre<< "\t  "<<reg.codigo<< "\t "<< reg.descripcion<<"\t"<<reg.marca<<"\t"<<reg.cantidad<<"\t "<<reg.lugar;
+}
+void adicionarRegistro()
+{
+	FILE *ptr;
+	instrumento reg;
+	solicitarDatos(reg);
+	reg.estado='A';
+	ptr= fopen("instrumento.dat", "ab"); 
+	fwrite(&reg, sizeof(reg),1,ptr);
+	fclose(ptr);
+}
+void listarArchivo()
+{
+	FILE *ptr;
+	instrumento reg;
+	int con=0;
+	ptr= fopen("instrumento.dat","rb");
+	if(ptr == NULL)
+	{
+		cout<< "EL archivo no existe...";
+	}
+	else
+	{
+		cout<<endl<<"   ** LISTADO DE INSTRUMENTOS **";
+		cout<<endl<<" N   Nombre      codigo      descripcion        marca      cantidad     lugar";
+		cout<<endl<<"---------------------------------------------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr))
+		{
+			if(reg.estado=='A')
+			{
+				mostrarRegistro(reg,con+1);
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+			con++;
+		}
+		fclose(ptr);
+	}
+}
+void buscarinstrumento(int nroreg)
+{
+	FILE *ptr;
+	instrumento reg;
+	ptr=fopen("instrumento.dat","rb");
+	if(ptr== NULL)
+	{
+		cout<< "El archivo no existe...";
+	}
+	else
+	{
+		fseek(ptr,(nroreg-1)*sizeof(reg),SEEK_SET);
+		fread(&reg,sizeof(reg),1,ptr);
+		if(feof(ptr))
+		{
+			cout<<endl<< "Registro no existe";
+		}
+		else{
+			if(reg.estado=='A'){
+		cout<<endl<<"   ** LISTADO DE INSTRUMENTOS **";
+		cout<<endl<<" N   Nombre      codigo      descripcion      marca    cantidad     lugar";
+		cout<<endl<<"---------------------------------------------------------------------------";
+		mostrarRegistro(reg,nroreg);}
+			else{
+				cout<<endl<< "Registro eliminado...";
+			    }
+		    }
+	}fclose(ptr);
+	
+}
+void modificarinstrumento(int nroreg)
+{
+	FILE *ptr;
+	instrumento reg;
+	char resp;
+	ptr=fopen("instrumento.dat","r+b");
+	if(ptr== NULL)
+	{
+		cout<< "El archivo no existe...";
+	}
+	else
+	{
+		fseek(ptr,(nroreg-1)*sizeof(reg),SEEK_SET);
+		fread(&reg,sizeof(reg),1,ptr);
+		if(feof(ptr))
+		{
+			cout<<endl<< "Registro no existe"<<endl;
+		}
+		else
+		{
+			if(reg.estado=='A')
+			{
+		cout<<endl<<"   ** LISTADO DE INSTRUMENTOS **";
+		cout<<endl<<" N   Nombre      codigo      descripcion      marca    cantidad     lugar";
+		cout<<endl<<"---------------------------------------------------------------------------";
+		mostrarRegistro(reg,nroreg);
+		cout<<"desea modificar? (y)es:";
+		cin>>resp;
+		if(resp=='y')
+		{
+		solicitarDatos(reg);
+		reg.estado='A';
+		fseek(ptr,(nroreg-1)*sizeof(reg),SEEK_SET);
+		fwrite(&reg,sizeof(reg),1,ptr);
+		}
+		else
+		{
+			cout<<"regsitro no modificado"<<endl;
+		}
+		fclose(ptr);
+            }
+		 }
+	}
+}
+void eliminarinstrumento(int nroreg)
+{
+	FILE *ptr;
+	instrumento reg;
+	char resp;
+	ptr=fopen("instrumento.dat","r+b");
+	if(ptr== NULL)
+	{
+		cout<< "El archivo no existe...";
+	}
+	else
+	{
+		fseek(ptr,(long)(nroreg-1)*sizeof(reg),0);
+		fread(&reg,sizeof(reg),1,ptr);
+		if(feof(ptr))
+		{
+			cout<<endl<< "Registro no existe"<<endl;
+		}
+		else
+		{
+			if(reg.estado=='A')
+			{
+		cout<<endl<<"   ** LISTADO DE INSTRUMENTOS **";
+		cout<<endl<<" N   Nombre      codigo      descripcion      marca    cantidad     lugar";
+		cout<<endl<<"---------------------------------------------------------------------------";
+		mostrarRegistro(reg,nroreg);
+		cout<<"desea eliminar a "<<reg.nombre<<"? (y)es:";
+		cin>>resp;
+		if(resp=='y'){
+		reg.estado='E';
+		fseek(ptr,(long)(nroreg-1)*sizeof(reg),0);
+		fwrite(&reg,sizeof(reg),1,ptr);
+		cout<<""<<reg.nombre<<" a sido eliminada"<<endl;
+		getch();
+		}
+		else
+		{
+			cout<<"regsitro no eliminado"<<endl;
+		}
+		fclose(ptr);
+            }
+		 }
+	}
+}
+void menuistrumento()
+{
+	int opcion,m,m2,m3;
+	
+	do{
+	cout<<"\t\t INVENTARIO DE INSTRUMENTOS DE ORQUESTA"<<endl;
+	cout<<"\t 1.Crear archivo"<<endl;
+	cout<<"\t 2.Adicionar instrumento"<<endl;
+	cout<<"\t 3.Buscar instrumento"<<endl;
+	cout<<"\t 4.mostrar lista de instrumento"<<endl;
+	cout<<"\t 5.modificar instrumento"<<endl;
+	cout<<"\t 6.Eliminar instrumento"<<endl;
+	cout<<"\t 7.volver a menu"<<endl;
+	cout<<"\t 0.Salir"<<endl;
+	cout<<"\t opcion: ";
+	cin>>opcion;
+	system("cls");
+	switch(opcion)
+	{
+	case 1:
+		crearArchivo("instrumento.dat");
+		cout<<"--EL ARCHIVO FUE CREADO--"<<endl;
+		getch();
+		system("cls");
+        break;
+	case 2:
+		cout<<"Ingrese datos";
+		listarArchivo();
+		adicionarRegistro();
+		getch();
+		system("cls");
+		break;
+	case 3:
+		cout<<"registro a buscar:";
+		cin>>m;
+		buscarinstrumento(m);
+		getch();
+		system("cls");
+		break;
+	case 4:
+		listarArchivo();
+		getch();
+		system("cls");
+		break;
+	case 5:
+        cout<<"registro a modificar:";
+		cin>>m2;
+		modificarinstrumento(m2);
+		getch();
+		system("cls");
+		break;
+	case 6:
+		cout<<"registro a eliminar:";
+		cin>>m3;
+		eliminarinstrumento(m3);
+		getch();
+		system("cls");
+		break;
+	case 0:
+		cout<<"\t saliendo del programa";
+		break;
+	default:
+		cout<<"\t opcion invalida";
+		break;
+	}
+	}while(opcion!=0);
+
+}
+void datospartidura(partituras &dat) 
+{	
+	cout<<endl<< "Nombre:";
+	do{
+		getline(cin,dat.nom);
+	}while(dat.nom.length() == 0);
+	cout<< "codigo:";
+	cin>> dat.codigo;
+	cout<<"autor:";	
+	do{
+		getline(cin, dat.autor);
+	}while(dat.autor.length() == 0);
+	system("cls");
+}
+void Registro(partituras &dat, int nroReg)
+{
+	cout<<endl<<nroReg<<"\t"<<dat.nom<<"\t      "<<dat.codigo<<"\t       "<<dat.autor<<endl;
+}
+void adicionarpartiduras()
+{
+	FILE *ptr;
+	partituras dat;
+	datospartidura(dat);
+	dat.estado='A';
+	ptr= fopen("partidura.dat","ab");
+	fwrite(&dat, sizeof(dat),1,ptr);
+	fclose(ptr);
+}
+void listar()
+{
+	FILE *ptr;
+	partituras dat;
+	int cont= 0;
+	ptr= fopen("partidura.dat","rb");
+	if(ptr == NULL)
+	{
+		cout<< "EL archivo no existe...";
+	}
+	else
+	{
+		cout<<endl<<"   ** LISTADO DE PARTITURAS **";
+		cout<<endl<<"N      Nombre      codigo         autor";
+		cout<<endl<<"-----------------------------------------";
+		fread(&dat, sizeof(dat),1,ptr);
+		while(!feof(ptr))
+		{
+			if(dat.estado=='A')
+			{
+				Registro(dat,cont+1);
+			}
+			fread(&dat, sizeof(dat),1,ptr);
+			cont++;
+		}
+		fclose(ptr);
+	}
+}
+void buscarpartitura(int nroReg)
+{
+	FILE *ptr;
+	partituras dat;
+	ptr=fopen("partidura.dat","rb");
+	if(ptr== NULL)
+	{
+		cout<< "El archivo no existe...";
+	}
+	else
+	{
+		fseek(ptr,(long)(nroReg-1)*sizeof(dat),0);
+		fread(&dat,sizeof(dat),1,ptr);
+		if(feof(ptr))
+			cout<<endl<< "Registro no existe";
+		else{
+			if(dat.estado=='A'){
+		cout<<endl<<"   ** LISTADO DE PARTITURAS **";
+		cout<<endl<<"N      Nombre      codigo         autor";
+		cout<<endl<<"-----------------------------------------";
+		Registro(dat,nroReg);}
+			else
+				cout<<endl<< "Registro eliminado...";
+				fclose(ptr);
+
+		    }
+	}fclose(ptr);
+	
+}
+void modificarpartitura(int nroReg)
+{
+	FILE *ptr;
+	partituras dat;
+	char resp;
+	ptr=fopen("partidura.dat","r+b");
+	if(ptr== NULL)
+	{
+		cout<< "El archivo no existe...";
+	}
+	else
+	{
+		fseek(ptr,(long)(nroReg-1)*sizeof(dat),0);
+		fread(&dat,sizeof(dat),1,ptr);
+		if(feof(ptr))
+		{
+			cout<<endl<< "Registro no existe"<<endl;
+		}
+		else
+		{
+			if(dat.estado=='A')
+			{
+		cout<<endl<<"   ** LISTADO DE PARTITURAS **";
+		cout<<endl<<"N      Nombre      codigo         autor";
+		cout<<endl<<"-----------------------------------------";
+		Registro(dat,nroReg);
+		cout<<"desea modificar? (y)es:";
+		cin>>resp;
+		if(resp=='y')
+		{
+		datospartidura(dat);
+		dat.estado='A';
+		fseek(ptr,(long)(nroReg-1)*sizeof(dat),0);
+		fwrite(&dat,sizeof(dat),1,ptr);
+		}
+		else
+		{
+			cout<<"regsitro no modificado"<<endl;
+		}
+		fclose(ptr);
+            }
+		 }
+	}
+}
+void eliminarpartitura(int nroReg)
+{
+	FILE *ptr;
+	partituras dat;
+	char resp;
+	ptr=fopen("partidura.dat","r+b");
+	if(ptr== NULL)
+	{
+		cout<< "El archivo no existe...";
+	}
+	else
+	{
+		fseek(ptr,(long)(nroReg-1)*sizeof(dat),0);
+		fread(&dat,sizeof(dat),1,ptr);
+		if(feof(ptr))
+		{
+			cout<<endl<< "Registro no existe"<<endl;
+		}
+		else
+		{
+			if(dat.estado=='A')
+			{
+		cout<<endl<<"   ** LISTADO DE PARTITURAS **";
+		cout<<endl<<"N      Nombre      codigo         autor";
+		cout<<endl<<"-----------------------------------------";
+		Registro(dat,nroReg);
+		cout<<"desea eliminar a "<<dat.nom<<"? (y)es:";
+		cin>>resp;
+		if(resp=='y'){
+		
+		dat.estado='E';
+		fseek(ptr,(long)(nroReg-1)*sizeof(dat),0);
+		fwrite(&dat,sizeof(dat),1,ptr);
+		cout<<""<<dat.nom<<" a sido eliminada"<<endl;
+		getch();
+		}
+		else
+		{
+			cout<<"regsitro no eliminado"<<endl;
+		}
+		fclose(ptr);
+            }
+		 }
+	}
+}
+void menupartiduras()
+{
+	int opcion,n,n2,n3;
+	
+	do{
+	cout<<"\t\t PARTIDURAS"<<endl;
+	cout<<"\t 1.Crear archivo"<<endl;
+	cout<<"\t 2.Adicionar partitura"<<endl;
+	cout<<"\t 3.Buscar partitura"<<endl;
+	cout<<"\t 4.Mostrar listar de partituras"<<endl;
+	cout<<"\t 5.Modificar partitura"<<endl;
+	cout<<"\t 6.Eliminar partitura"<<endl;
+	cout<<"\t 7.volver a menu"<<endl;
+	cout<<"\t 0.Salir"<<endl;
+	cout<<"\t opcion:";
+	cin>>opcion;
+	system("cls");
+	switch(opcion)
+	{
+	case 1:
+		crearArchivo("partidura.dat");
+		cout<<"\n --EL ARCHIVO FUE CREADO--"<<endl;
+		system("pause");
+		system("cls");
+		break;
+	case 2:
+		cout<<"\t INGRESE DATOS ";
+		listar();
+		adicionarpartiduras();
+		break;
+	case 3:
+		cout<<"registro a buscar:";
+		cin>>n;
+		buscarpartitura(n);
+		getch();
+		system("cls");
+		break;
+	case 4:
+	    listar();
+		getch();
+		system("cls");
+		break;
+	case 5:
+		cout<<"registro a modificar:";
+		cin>>n2;
+		modificarpartitura(n2);
+		break;
+	case 6:
+		cout<<"registro a eliminar:";
+		cin>>n3;
+		eliminarpartitura(n3);
+		break;
+	case 7:
+		break;
+	case 0:
+		cout<<"\t saliendo del programa";
+		break;
+	default:
+		cout<<"\t opcion invalida"<<endl;
+		break;
+	}
+	}while(opcion!=0);
+	system("cls");
+	getch();
+
+}
+void main()
+{
+	int opcion;
+	do{
+	cout<<"\t\t ****MENU*****"<<endl;
+	cout<<"\t 1.INSTRUMENTO"<<endl;
+	cout<<"\t 2.PARTIDURAS"<<endl;
+	cout<<"\t 3.VOLVER ATRAS"<<endl;
+	cout<<"\t 0.salir del programa"<<endl;
+	cout<<"\t opcion:";
+	cin>>opcion;
+	system("cls");
+	switch(opcion)
+	{
+	case 1:
+		menuistrumento();
+		break;
+	case 2:
+		menupartiduras();
+		break;
+	case 3:
+		//menu usuario();
+		break;
+	case 0:
+		cout<<"\t\n saliendo del programa";
+		break;
+	default:
+		cout<<"\t opcion invalida";
+		break;
+	}
+	}while(opcion!=0);
+   getch();
+}
