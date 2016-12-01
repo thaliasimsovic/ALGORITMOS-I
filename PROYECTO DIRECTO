@@ -1,0 +1,179 @@
+#include "stdafx.h"
+#include "conio.h"
+#include <stdio.h>
+#include <string>
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+struct tipo_registro{
+	string nombre;
+	int codigo;
+	string descripcion;
+	string marca;
+	int cantidad;
+	string lugar;
+	char estado;
+};
+
+struct tipo_registro 
+	registro;
+
+long int dir_fisica;  // Declaracion global de la variable para calcular
+		      // la direccion fisica
+
+FILE*ptr;
+
+void ALTA_DIRECTA(); // Declaracion global de la rutina de Altas
+void CONSULTA_DIRECTA(); // Declaracion global de la rutina de Consultas
+void MODIFICACION_DIRECTA(); // Declaracion global de la rutina de Modificaciones
+void BAJA_LOGICA_DIRECTA(); // Declaracion global de la rutina de Baja Logica
+void LISTADO_SECUENCIAL(); // Declaracion global de la rutina de Listado
+
+
+
+void main()
+{
+	int opcion,m,m2,m3;
+	
+	do{
+
+	cout<<"\t\t INVENTARIO DE INSTRUMENTOS DE ORQUESTA"<<endl;
+	cout<<"\t 1.ALTAS DIRECTAS"<<endl;
+	cout<<"\t 2.CONSULTAS DIRECTAS"<<endl;
+	cout<<"\t 3.MODIFICACION DIRECTA"<<endl;
+	cout<<"\t 4.BAJAS LOGICAS DIRECTAS"<<endl;
+	cout<<"\t 5.LISTADO SECUENCIAL"<<endl;
+	cout<<"\t 0.Salir"<<endl;
+	cout<<"\t opcion: ";
+	cin>>opcion;
+	system("cls");
+	switch(opcion)
+	{
+	case 1:
+		ALTA_DIRECTA();
+		break;
+	case 2:
+		CONSULTA_DIRECTA();
+		break;
+	case 3:
+		MODIFICACION_DIRECTA();
+		break;
+	case 4:
+		BAJA_LOGICA_DIRECTA();
+		break;
+	case 5:
+        LISTADO_SECUENCIAL();
+		break;
+	
+	case 0:
+		cout<<"\t saliendo del programa";
+		break;
+	default:
+		cout<<"\t opcion invalida";
+		break;
+	}
+	}while(opcion!=0);
+
+}
+
+
+void ALTA_DIRECTA()
+{
+  int codigo;  // Variable local para el numero de producto
+  
+  ptr=fopen("inventario.dir","r"); // Intenta abrir el archivo PRODUCTO.DIR
+				     // en modo de lectura/escritura
+  if(ptr==NULL)
+    ptr=fopen("inventario.dir","w"); // Crea el archivo en caso de no existir
+
+  
+
+  fread(&registro,sizeof(registro),1,ptr);
+     // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+
+  
+
+   cout<<endl<< "introducir Nombre:";
+
+	do{
+		getline(cin, registro.nombre);
+
+	}while(registro.nombre.length() == 0);
+
+	
+	cout<< "codigo:";
+	cin>>codigo;
+  
+
+	cout<<"descripcion:";	
+	do{
+		getline(cin, registro.descripcion);
+	}while(registro.descripcion.length() == 0);
+	cout<<"marca:";
+	do{
+		getline(cin,registro.marca);
+	}while(registro.marca.length() == 0);
+	 
+	cout<<"cantidad:";
+	cin>>registro.cantidad;
+
+	cout<<"lugar:";
+	do{
+		getline(cin, registro.lugar);
+	}while(registro.lugar.length() == 0);
+
+
+  fseek(ptr,sizeof(registro),SEEK_SET); //Posicionar el apuntador del archivo
+  fwrite(&registro,sizeof(registro),1,ptr); // Grabar el Registro completo
+  fclose(ptr); // Cierra el archivo
+
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+  getch();
+  return;
+}
+
+
+
+
+
+void CONSULTA_DIRECTA(void)
+{
+  int codigo; // Variable local para el numero de producto que desea consultar
+  
+  cout << "\n\rCONSULTA DE REGISTROS DE PRODUCTOS";
+  ptr=fopen("inventario.dir","r"); // Intenta abrir el archivo PRODUCTO.DIR
+				     // en modo de solo lectura
+  if(ptr==NULL)
+  {
+    cout << "\n\n\n\rNo existe el archivo !!!";
+    cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+    getch();
+    return;
+  }
+
+  cout << "\n\n\n\rNumero de producto: "; cin >> codigo;
+
+  dir_fisica=codigo*sizeof(registro); // Calculo de la dir. fisica
+  fseek(ptr,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+  fread(&registro,sizeof(registro),1,ptr);
+     // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+  if(registro.codigo==codigo)
+  {
+    cout << "\n\rNOMBRE            CODIGO        DESCRIPCION         MARCA        CANTIDAD              LUGAR           ESTADO";
+    cout << "\n\r------------------------------------------------------------------------";
+    cout<<endl<<" "<<registro.nombre<<" "<<registro.codigo<<" "<<registro.descripcion<<""<<registro.marca<<" "<<registro.cantidad<<" "<<registro.lugar<<" "<<registro.estado;
+  }
+  else
+  {
+    cout << "\n\n\n\rNo existe ese registro !!!";
+  }
+  fclose(ptr);
+  cout << "\n\n\n\n\r<<< Oprima cualquier tecla para continuar >>>";
+  getch();
+  return;
+}
+void MODIFICACION_DIRECTA(){} // Declaracion global de la rutina de Modificaciones
+void BAJA_LOGICA_DIRECTA(){} // Declaracion global de la rutina de Baja Logica
+void LISTADO_SECUENCIAL(){} // Declaracion global de la rutina de Listado
+
+
