@@ -1,0 +1,43 @@
+#include "stdafx.h"
+#include "conio.h"
+#include <stdio.h>
+#include <string>
+#include <iostream>
+#include <stdlib.h>
+#define USSER "mio"
+#define PASS "hola"
+using namespace std;
+
+int main()
+{
+	string usuario, password;
+	int contador = 0;
+	bool ingresa = false;
+
+	do{
+		system("cls");
+		cout<<"LOGIN DE USUARIO:"<<endl;
+		cout<<"INGRESE EL USUARIO:"<<endl;
+		getline(cin, usuario);
+		cout<<"INGRESE EL PASSWORD"<<endl;
+		getline(cin,password);
+
+		if((usuario==USSER )&& (password==PASS)){
+
+			ingresa= true;
+		}else{
+			cout<<" EL USUARIO Y PASSWORD SON INVALIDOS:"<<endl;
+			cin.get();
+			contador++;
+
+		}
+	}while(ingresa== false && contador < 3 );
+
+	if(ingresa==false)
+	{
+		cout<<"usted no pudo ingresar al sistema:"<<endl;
+	}else{
+		cout<<"bienvenido al sistema:"<<endl;
+	}
+	getch();
+}
