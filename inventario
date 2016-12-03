@@ -52,6 +52,7 @@ void menupartiduras();
 
 void main()
 {
+
 system("color 69");
 	string usuario;
 	string password;
@@ -61,6 +62,9 @@ system("color 69");
 	do{
 		system("cls");
 		cout<<"LOGIN DE USUARIO:"<<endl;
+		cout<<"A CONTINUACION DEBERA INGRESAR EL USUARIO Y PASSWORD:"<<endl;
+		cout<<"--------------------------------"<<endl;
+		cout<<"--------------------------------"<<endl;
 		cout<<"INGRESE EL USUARIO:"<<endl;
 		getline(cin, usuario);
 		cout<<"INGRESE EL PASSWORD"<<endl;
@@ -85,16 +89,19 @@ system("color 69");
 		cout<<"bienvenido al sistema"<<endl<<usuario<<endl<<"usted ingresara al menu principal:"<<endl;
 		menuprincipal();
 	}
+	
 	getch();
 }
 
 
 void menuprincipal()
 {
+	system("cls");
 	system("color 0B");
 	int opcion;
 	do{
 	cout<<"\t\t ****MENU*****"<<endl;
+	cout<<"******************************************"<<endl;
 	cout<<"\t 1.INSTRUMENTO"<<endl;
 	cout<<"\t 2.PARTITURAS"<<endl;
 	cout<<"\t 3.VOLVER ATRAS"<<endl;
@@ -128,6 +135,7 @@ void menuprincipal()
 
 void instrumento()
 {
+	system("cls");
 	system("color 7D");
 	int opcion;
 	do{
@@ -572,6 +580,7 @@ void eliminarpartitura(int nroReg)
 }
 void menupartiduras()
 {
+	system("cls");
 	system("color 3D");
 	int opcion,n,n2,n3;
 	
