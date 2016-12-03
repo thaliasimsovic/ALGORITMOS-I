@@ -8,6 +8,10 @@
 #define PASS "hola"
 using namespace std;
 
+struct ID{
+string usuario;
+string password;
+};
 
 struct instrumento{
 	string nombre;
@@ -33,6 +37,7 @@ struct partituras datos;
 
 
 
+
 FILE*ptr;
 void LOGIN();
 void instrumento();
@@ -52,6 +57,8 @@ void menupartiduras();
 
 void main()
 {
+
+system("color 69");
 	string usuario;
 	string password;
 	int contador = 0;
@@ -60,6 +67,9 @@ void main()
 	do{
 		system("cls");
 		cout<<"LOGIN DE USUARIO:"<<endl;
+		cout<<"A CONTINUACION DEBERA INGRESAR EL USUARIO Y PASSWORD:"<<endl;
+		cout<<"--------------------------------"<<endl;
+		cout<<"--------------------------------"<<endl;
 		cout<<"INGRESE EL USUARIO:"<<endl;
 		getline(cin, usuario);
 		cout<<"INGRESE EL PASSWORD"<<endl;
@@ -84,15 +94,19 @@ void main()
 		cout<<"bienvenido al sistema"<<endl<<usuario<<endl<<"usted ingresara al menu principal:"<<endl;
 		menuprincipal();
 	}
+	
 	getch();
 }
 
 
 void menuprincipal()
 {
+	system("cls");
+	system("color 0B");
 	int opcion;
 	do{
 	cout<<"\t\t ****MENU*****"<<endl;
+	cout<<"******************************************"<<endl;
 	cout<<"\t 1.INSTRUMENTO"<<endl;
 	cout<<"\t 2.PARTITURAS"<<endl;
 	cout<<"\t 3.VOLVER ATRAS"<<endl;
@@ -126,6 +140,8 @@ void menuprincipal()
 
 void instrumento()
 {
+	system("cls");
+	system("color 7D");
 	int opcion;
 	do{
 	cout<<"\t\t INVENTARIO DE INSTRUMENTOS DE ORQUESTA"<<endl;
@@ -297,9 +313,9 @@ void MODIFICACION_DIRECTA()
      // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
   if(registro.codigo==codigo)
   {
-      cout << "\n\rNOMBRE            CODIGO        DESCRIPCION         MARCA        CANTIDAD              LUGAR           ESTADO";
+      cout << "\n\r    NOMBRE                   CODIGO               DESCRIPCION                    MARCA               CANTIDAD                    LUGAR                     ESTADO";
       cout << "\n\r-------------------------------------------------------------------------------------------------------------------------------";
-      cout<<endl<<"      "<<registro.nombre<<"      "<<registro.codigo<<"      "<<registro.descripcion<<"      "<<registro.marca<<"      "<<registro.cantidad<<"      "<<registro.lugar<<"      "<<registro.estado;
+      cout<<endl<<""<<registro.nombre<<" "<<registro.codigo<<"  "<<registro.descripcion<<"   "<<registro.marca<<"   "<<registro.cantidad<<"   "<<registro.lugar<<"      "<<registro.estado;
 
       cout << "\n\n\n\rModifique los nuevos datos ...";
       cout << "\n\rNOMBRE"<<endl;  
@@ -569,6 +585,8 @@ void eliminarpartitura(int nroReg)
 }
 void menupartiduras()
 {
+	system("cls");
+	system("color 3D");
 	int opcion,n,n2,n3;
 	
 	do{
